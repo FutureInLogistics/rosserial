@@ -3,7 +3,7 @@
 
 #include "rosserial/ros/node_handle.h"
 #include "rosserial/duration.cpp"
-#include "rosserial/time.cpp"
+#include "rosserial/ros_time.cpp"
 #include <iostream>
 
 class ClientComms {
