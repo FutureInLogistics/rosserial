@@ -10,49 +10,53 @@
 
 #include "mbed.h"
 
-#include "BufferedSerial.h"
-
 class MbedHardware {
   public:
-    MbedHardware(PinName tx, PinName rx, long baud = 57600)
-      :iostream(tx, rx){
+    MbedHardware(PinName tx, PinName rx, int baud = 57600) : 
+        iostream(tx, rx, baud)
+    {
+      ;
       baud_ = baud;
       t.start();
     }
 
     MbedHardware()
-      :iostream(USBTX, USBRX) {
+      : iostream(USBTX, USBRX) {
         baud_ = 57600;
         t.start();
     }
 
-    void setBaud(long baud){
+    void setBaud(int baud){
       this->baud_= baud;
+      iostream.set_baud(baud_);
     }
 
     int getBaud(){return baud_;}
 
     void init(){
-        iostream.baud(baud_);
+        iostream.set_baud(baud_);
     }
 
     int read(){
         if (iostream.readable()) {
-            return iostream.getc();
+            char c;
+            iostream.read(&c, 1);
+            return c;
         } else {
             return -1;
         }
     };
+    
     void write(uint8_t* data, int length) {
-        for (int i=0; i<length; i++)
-             iostream.putc(data[i]);
+        // for (int i=0; i<length; i++)
+        iostream.write(data, length);
     }
 
-    unsigned long time(){return t.read_ms();}
+    unsigned long time(){return chrono::duration_cast<chrono::milliseconds>(t.elapsed_time()).count();}
 
 protected:
     BufferedSerial iostream;
-    long baud_;
+    int baud_;
     Timer t;
 };
 
