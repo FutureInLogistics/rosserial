@@ -12,17 +12,15 @@
 
 class MbedHardware {
   public:
-    MbedHardware(PinName tx, PinName rx, int baud = 57600) : 
-        iostream(tx, rx, baud)
-    {
-      ;
+    MbedHardware(PinName tx, PinName rx, int baud = 115200)
+      : iostream(tx, rx, baud) {
       baud_ = baud;
       t.start();
     }
 
     MbedHardware()
-      : iostream(USBTX, USBRX) {
-        baud_ = 57600;
+      : iostream(USBTX, USBRX, 115200) {
+        baud_ = 115200;
         t.start();
     }
 
