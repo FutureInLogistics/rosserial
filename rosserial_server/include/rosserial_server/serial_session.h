@@ -93,7 +93,7 @@ private:
       }
       return;
     }
-    ROS_INFO_STREAM("Opened " << port_);
+    ROS_DEBUG_STREAM("Opened " << port_);
     failed_connection_attempts_ = 0;
 
     typedef boost::asio::serial_port_base serial;
